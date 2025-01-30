@@ -15,21 +15,6 @@ class TextNode:
         self.type = type
         self.url = url
         
-        match type:
-            case "normal": 
-                self.type = TextType.NORMAL
-            case "bold": 
-                self.type = TextType.BOLD
-            case "italic": 
-                self.type = TextType.ITALIC
-            case "code": 
-                self.type = TextType.CODE
-            case "link": 
-                self.type = TextType.LINK
-            case "image": 
-                self.type = TextType.IMAGE
-            case _:
-                self.type = None
         
         
     def __eq__(self, TextNode):
