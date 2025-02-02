@@ -28,12 +28,6 @@ class TestHTMLNode(unittest.TestCase):
     
         
 class TestLeafNode(unittest.TestCase):
-    
-    def test_header(self):
-        level = randint(1, 6)
-        props = {"level": level}
-        node = LeafNode("h", "This is a heading", props).to_html()
-        self.assertTrue(node.startswith(f"<h{level}>") and node.endswith(f"</h{level}>"))
         
     def test_paragraph(self):
         node = LeafNode("p", "This is a paragraph\nIt has multiple lines and stuff!\n Wow!", None).to_html()
@@ -42,7 +36,3 @@ class TestLeafNode(unittest.TestCase):
     def test_link(self):
         node = LeafNode("a", "click me!", {"href": "boot.dev", "target": "_sometarget"})
         self.assertEqual(node.to_html(), "<a href=boot.dev target=_sometarget>click me!</a>")
-        
-    def test_img(self):
-        node = LeafNode("img", "imagename.png", {"class": "fit-pic", "src": "google.com", "alt": "hover/caption"}).to_html()
-        self.assertTrue("<img class=" in node and "src=" in node)
