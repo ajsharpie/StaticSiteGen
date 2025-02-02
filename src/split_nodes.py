@@ -35,7 +35,7 @@ def split_nodes_link(old_nodes):
         before_link = node.text.split(f'[{links[0][0]}]({links[0][1]})', 1)[0]
         after_link = node.text.partition(f'[{links[0][0]}]({links[0][1]})')[2]
         final_list.append(TextNode(before_link, TextType.TEXT))
-        final_list.append(TextNode(links[0][0], TextType.LINK, {'href': links[0][1]}))
+        final_list.append(TextNode(links[0][0], TextType.LINK, links[0][1]))
         if after_link != '':
             final_list.extend(split_nodes_link([TextNode(after_link, TextType.TEXT)]))  
         new_nodes.extend(final_list)

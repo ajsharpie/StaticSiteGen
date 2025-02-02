@@ -31,10 +31,10 @@ class TextNode:
         return f"TextNode({self.text}, {self.type}, {self.url}, {self.alt})"
     
     def text_to_html(self):
-        if self.type == 'a':
-            return LeafNode(self.type, self.text, {'href': self.url})            
-        if self.type == 'img':
-            return LeafNode(self.type, '', {'src': self.url, 'alt': self.alt})
-        return LeafNode(self.type, self.text)
+        if self.type.value == 'a':
+            return LeafNode(self.type.value, self.text, {'href': self.url})            
+        if self.type.value == 'img':
+            return LeafNode(self.type.value, '', {'src': self.url, 'alt': self.alt})
+        return LeafNode(self.type.value, self.text)
                 
     

@@ -23,14 +23,21 @@ def block_to_html_node(block):
         return org_list_to_html(block)
     if block_type == 'liu':
         return unorg_list_to_html(block)
-    raise ValueError('bad block type')   
+    raise ValueError('bad block type')  
+
+def text_to_children(text):
+    text_nodes = text_to_textnodes(text)
+    children = []
+    for node in text_nodes:
+        children.append(node.text_to_html()) 
+    return children
 
 def org_list_to_html(block):
     list_items = block.split('\n')
     html_items = []
-    for item in items:
+    for item in list_items:
         text = item[3:]
-        children = text_to_textnodes(text)
+        children = text_to_children(text)
         html_items.append(ParentNode('li', children))
     return ParentNode('ol', html_items)
 
@@ -39,7 +46,7 @@ def unorg_list_to_html(block):
     html_items = []
     for item in list_items:
         text = item[2:]
-        children_of_item = text_to_textnodes(text)
+        children_of_item = text_to_children(text)
         html_items.append(ParentNode('li', children_of_item))
     return ParentNode('ul', html_items)
         
@@ -48,14 +55,14 @@ def code_to_html(block):
     if not block.startswith('```') or not block.endswith('```'):
         raise ValueError('bad code block')
     text = block[4:-3]
-    children = text_to_textnodes(text)
+    children = text_to_children(text)
     code = ParentNode('code', children)
     return ParentNode('pre', code)
 
 def paragraph_to_html(block):
     lines = block.split('\n')
     paragraph = ' '.join(lines)
-    children = text_to_textnodes(paragraph)
+    children = text_to_children(paragraph)
     return ParentNode('p', children)
     
 def blockquote_to_html(block):
@@ -66,7 +73,7 @@ def blockquote_to_html(block):
             raise ValueError('Invalid quote line')
         newlines.append(line.lstrip('>').strip())
         content = " ".join(newlines)
-        children = text_to_textnodes(content)
+        children = text_to_children(content)
         return ParentNode('blockquote', children)
         
 def heading_to_html(block):
@@ -79,6 +86,6 @@ def heading_to_html(block):
     if level + 1 >= len(block):
         raise ValueError(f'bad heading level: {level}')
     text = block[level+1:]
-    children = text_to_textnodes(text)
-    return ParentNode('h', children, {'level': level})
+    children = text_to_children(text)
+    return ParentNode(f'h{level}', children)
 

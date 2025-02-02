@@ -30,7 +30,7 @@ def block_to_block_type(mdtext):
     elif mdtext.startswith('#'):
         if "# " in mdtext[0:6]:
             return 'h'
-    elif mdtext.startswtih('1. '):
+    elif mdtext.startswith('1. '):
         return 'lio'
     else:
         return 'p'
