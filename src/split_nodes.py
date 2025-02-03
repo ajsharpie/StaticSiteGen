@@ -55,7 +55,7 @@ def split_nodes_image(old_nodes):
         before_img = node.text.split(f'![{imgs[0][0]}]({imgs[0][1]})', 1)[0]
         after_img = node.text.partition(f'![{imgs[0][0]}]({imgs[0][1]})')[2]
         final_list.append(TextNode(before_img, TextType.TEXT))
-        final_list.append(TextNode('', TextType.IMAGE, {'src': imgs[0][1], 'alt': imgs[0][0]}))
+        final_list.append(TextNode('', TextType.IMAGE, imgs[0][1], imgs[0][0]))
         if after_img != "":
             final_list.extend(split_nodes_image([TextNode(after_img, TextType.TEXT)]))  
         new_nodes.extend(final_list)

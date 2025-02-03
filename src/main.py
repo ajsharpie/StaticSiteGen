@@ -4,11 +4,11 @@ from block_to_html import markdown_to_html_node
 from textnode import TextNode
 
 def main():
+    
+    copy_to_path('static', 'public')
+    generate_pages_recursive('content', 'template.html', 'public')
 
-    copy_to_path('static', 'publictest')
-    generate_page('content/index.md', 'template.html', 'publictest/index.html')
-    pass
-        
+      
 def copy_to_path(src, dest):
     shutil.rmtree(dest, ignore_errors=True)
     os.mkdir(dest)
@@ -28,7 +28,7 @@ def extract_title(markdown):
 def generate_page(from_path, template_path, dest_path):
     print(f'generating page: from {from_path}, to {dest_path}, using {template_path}')
     
-    if os.file.exists(from_path) and os.file.exists(template_path):
+    if os.path.exists(from_path) and os.path.exists(template_path):
         file = open(from_path)
         mdtext = file.read()
         file.close()
@@ -40,15 +40,15 @@ def generate_page(from_path, template_path, dest_path):
         content = markdown_to_html_node(mdtext).to_html()
         title = extract_title(mdtext)
         
-        template.replace('{{ Title }}', title)
-        template.replace('{{ Content }}', content)
+        template = template.replace(f'{{{{ Title }}}}', title)
+        template = template.replace(f'{{{{ Content }}}}', content)
         
         dirname = os.path.dirname(dest_path)
         
         if not os.path.exists(dirname):
             os.makedirs(dirname)
         
-        file = open(dest_path, 'w')
+        file = open(dest_path, 'x')
         file.write(template)
         file.close()
            
@@ -57,6 +57,18 @@ def generate_page(from_path, template_path, dest_path):
     else:
         raise Exception('Path error, check inputs')
 
+def generate_pages_recursive(dir_path_content, template_path, dest_dir_path):
+    contents = os.listdir(dir_path_content)
+    for item in contents:
+        if item[-3:] == '.md':
+            item_name = item[:-3]+'.html'
+            generate_page(dir_path_content+'/'+item, template_path, dest_dir_path+'/'+item_name)
+        if os.path.isdir(dir_path_content+'/'+item):
+            generate_pages_recursive(dir_path_content+'/'+item, template_path, dest_dir_path+'/'+item)
+        else:
+            continue
+        
+    print('done')
 if __name__== "__main__":
     main()
 
